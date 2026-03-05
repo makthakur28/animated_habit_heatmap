@@ -4,8 +4,6 @@ version: 0.1.0
 homepage: https://github.com/mayankthakur/animated_habit_heatmap
 repository: https://github.com/mayankthakur/animated_habit_heatmap
 issue_tracker: https://github.com/mayankthakur/animated_habit_heatmap/issues
-authors:
-  - Mayank Thakur
 
 environment:
   sdk: ^3.10.1

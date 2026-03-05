@@ -6,10 +6,12 @@
 ///
 /// ## Features
 ///
-/// - 📊 Display 365 days of activity data in a responsive heatmap grid
-/// - 🎨 Smooth color animations with customizable color scales
-/// - 🎯 Tap interaction support for individual day cells
-/// - 🔥 Built-in utilities for streak calculation and analytics
+/// - 📅 **GitHub-Style Layout**: Days are grouped into months, arranged in columns (weeks), with horizontal scrolling.
+/// - 🎨 **Smooth Animations**: High-performance color transitions when data changes.
+/// - 📱 **Responsive & Scrollable**: Designed to handle 365+ days of data with smooth horizontal navigation.
+/// - 🎯 **Interactive Cells**: Built-in support for tap callbacks and native tooltips.
+/// - 📊 **Professional Legend**: Optional "Less -> More" intensity legend.
+/// - 🔥 **Built-in Analytics**: Utility methods for streak calculation and activity tracking.
 ///
 /// ## Getting Started
 ///
@@ -25,20 +27,11 @@
 ///   DateTime(2024, 1, 2): 3,
 /// };
 ///
-/// final colorScale = [
-///   Colors.grey[200]!,
-///   Color(0xffc6e48b),
-///   Color(0xff7bc96f),
-///   Color(0xff239a3b),
-///   Color(0xff196127),
-/// ];
-///
 /// AnimatedHabitHeatmap(
 ///   data: habitData,
-///   colorScale: colorScale,
+///   colorScale: HeatmapColorScheme.github,
 /// )
 /// ```
-library animated_habit_heatmap;
 
 export 'src/models/heatmap_day.dart';
 export 'src/widgets/heatmap_grid.dart';

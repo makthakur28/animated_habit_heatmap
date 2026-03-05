@@ -24,7 +24,7 @@ class HeatmapCell extends StatelessWidget {
   final bool showTooltip;
 
   const HeatmapCell({
-    Key? key,
+    super.key,
     required this.date,
     required this.count,
     required this.colorScale,
@@ -32,7 +32,7 @@ class HeatmapCell extends StatelessWidget {
     required this.animationDuration,
     this.onTap,
     this.showTooltip = true,
-  }) : super(key: key);
+  });
 
   Color _getColor() {
     if (count <= 0) return colorScale.first;
