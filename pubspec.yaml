@@ -1,6 +1,6 @@
 name: animated_habit_heatmap
 description: "A beautiful, customizable animated heatmap widget for visualizing habit tracking data. Display 365 days of activity with smooth color animations, similar to GitHub contribution graphs."
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/mayankthakur/animated_habit_heatmap
 repository: https://github.com/mayankthakur/animated_habit_heatmap
 issue_tracker: https://github.com/mayankthakur/animated_habit_heatmap/issues
