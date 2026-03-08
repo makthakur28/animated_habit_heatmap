@@ -29,15 +29,23 @@ class HeatmapExampleScreen extends StatefulWidget {
   State<HeatmapExampleScreen> createState() => _HeatmapExampleScreenState();
 }
 
-class _HeatmapExampleScreenState extends State<HeatmapExampleScreen> {
+class _HeatmapExampleScreenState extends State<HeatmapExampleScreen> with TickerProviderStateMixin {
   late Map<DateTime, int> _habitData;
   DateTime? _selectedDate;
   int? _selectedCount;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
     _generateSampleData();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   void _generateSampleData() {
@@ -75,93 +83,113 @@ class _HeatmapExampleScreenState extends State<HeatmapExampleScreen> {
             onPressed: () => setState(() => _generateSampleData()),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Activity Overview',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-            ),
-            
-            // The Heatmap Widget
-            Card(
-              margin: const EdgeInsets.all(16),
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: AnimatedHabitHeatmap(
-                  data: _habitData,
-                  colorScale: HeatmapColorScheme.github,
-                  onCellTap: (date, count) {
-                    setState(() {
-                      _selectedDate = date;
-                      _selectedCount = count;
-                    });
-                  },
-                ),
-              ),
-            ),
-
-            if (_selectedDate != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade50,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.green.shade200),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.calendar_today, color: Colors.green.shade700, size: 20),
-                      const SizedBox(width: 12),
-                      Text(
-                        '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text('$_selectedCount activities'),
-                    ],
-                  ),
-                ),
-              ),
-
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Statistics',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ),
-            
-            _buildStatTile(
-              'Total Activity',
-              '${HeatmapUtils.calculateTotalActivity(_habitData)} points',
-              Icons.bolt,
-            ),
-            _buildStatTile(
-              'Current Streak',
-              '${HeatmapUtils.calculateCurrentStreak(_habitData)} days',
-              Icons.local_fire_department,
-            ),
-            _buildStatTile(
-              'Longest Streak',
-              '${HeatmapUtils.calculateLongestStreak(_habitData)} days',
-              Icons.emoji_events,
-            ),
-            
-            const SizedBox(height: 32),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: '3 Months'),
+            Tab(text: '6 Months'),
+            Tab(text: '12 Months'),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildHeatmapView(monthCount: 3),
+          _buildHeatmapView(monthCount: 6),
+          _buildHeatmapView(monthCount: 12),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeatmapView({required int monthCount}) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Activity Overview',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+
+          // The Heatmap Widget
+          Card(
+            margin: const EdgeInsets.all(16),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Colors.grey.shade300),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: AnimatedHabitHeatmap(
+                data: _habitData,
+                colorScale: HeatmapColorScheme.github,
+                monthCount: monthCount,
+                onCellTap: (date, count) {
+                  setState(() {
+                    _selectedDate = date;
+                    _selectedCount = count;
+                  });
+                },
+              ),
+            ),
+          ),
+
+          if (_selectedDate != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.green.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.calendar_today, color: Colors.green.shade700, size: 20),
+                    const SizedBox(width: 12),
+                    Text(
+                      '${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}: ',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text('$_selectedCount activities'),
+                  ],
+                ),
+              ),
+            ),
+
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Statistics',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+
+          _buildStatTile(
+            'Total Activity',
+            '${HeatmapUtils.calculateTotalActivity(_habitData)} points',
+            Icons.bolt,
+          ),
+          _buildStatTile(
+            'Current Streak',
+            '${HeatmapUtils.calculateCurrentStreak(_habitData)} days',
+            Icons.local_fire_department,
+          ),
+          _buildStatTile(
+            'Longest Streak',
+            '${HeatmapUtils.calculateLongestStreak(_habitData)} days',
+            Icons.emoji_events,
+          ),
+
+          const SizedBox(height: 32),
+        ],
       ),
     );
   }

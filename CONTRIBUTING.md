@@ -59,6 +59,8 @@ flutter test --coverage
 ### Before Submitting
 - [ ] Tests pass: `flutter test`
 - [ ] No analysis warnings: `flutter analyze`
+- [ ] Code follows linting rules: `flutter analyze --no-preamble`
+- [ ] CI checks pass (GitHub Actions)
 - [ ] Code is formatted: `dart format lib/`
 - [ ] Documentation is updated
 - [ ] CHANGELOG.md is updated
@@ -215,4 +217,3 @@ By contributing, you agree that your contributions will be licensed under the MI
 ---
 
 Thank you for contributing to make this project better! 🚀
-

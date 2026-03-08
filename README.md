@@ -1,5 +1,9 @@
 # Animated Habit Heatmap
 
+[![pub package](https://img.shields.io/pub/v/animated_habit_heatmap.svg)](https://pub.dev/packages/animated_habit_heatmap)
+[![Build Status](https://github.com/yourusername/animated_habit_heatmap/workflows/CI/badge.svg)](https://github.com/yourusername/animated_habit_heatmap/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A beautiful, customizable animated heatmap widget for visualizing habit tracking data in Flutter. Display your activity with smooth color animations, perfectly mimicking the GitHub contribution graph layout with month-grouped horizontal scrolling.
 
 ![Animated Habit Heatmap Screenshot](https://github.com/makthakur28/animated_habit_heatmap/blob/main/assets/screenshots/img.png?raw=true)

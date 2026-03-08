@@ -43,8 +43,8 @@ class HeatmapCell extends StatelessWidget {
   }
 
   String _getTooltipText() {
-    final dateStr = "${date.day} ${_monthNames[date.month - 1]} ${date.year}";
-    return "$count contributions on $dateStr";
+    final dateStr = '${date.day} ${_monthNames[date.month - 1]} ${date.year}';
+    return '$count contributions on $dateStr';
   }
 
   static const _monthNames = [
@@ -74,15 +74,21 @@ class HeatmapCell extends StatelessWidget {
       ),
     );
 
+    final semanticWidget = Semantics(
+      label: _getTooltipText(),
+      button: onTap != null,
+      child: widget,
+    );
+
     if (showTooltip) {
       return Tooltip(
         message: _getTooltipText(),
         preferBelow: false,
         verticalOffset: 20,
-        child: widget,
+        child: semanticWidget,
       );
     }
 
-    return widget;
+    return semanticWidget;
   }
 }

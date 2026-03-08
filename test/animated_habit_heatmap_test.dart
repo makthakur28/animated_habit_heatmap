@@ -128,5 +128,59 @@ void main() {
       final cell = tester.widget<HeatmapCell>(find.byType(HeatmapCell).first);
       expect(cell.size, equals(customCellSize));
     });
+
+    testWidgets('handles empty data gracefully', (WidgetTester tester) async {
+      _setSurfaceSize(tester);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedHabitHeatmap(
+              data: {},
+              colorScale: const [Colors.grey, Colors.green],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(AnimatedHabitHeatmap), findsOneWidget);
+      // Should still render labels and structure
+      expect(find.text('Mon'), findsOneWidget);
+    });
+
+    testWidgets('renders with different month counts', (WidgetTester tester) async {
+      _setSurfaceSize(tester);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedHabitHeatmap(
+              data: {DateTime.now(): 1},
+              colorScale: const [Colors.grey, Colors.green],
+              monthCount: 6,
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(AnimatedHabitHeatmap), findsOneWidget);
+    });
+
+    testWidgets('animation completes', (WidgetTester tester) async {
+      _setSurfaceSize(tester);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: AnimatedHabitHeatmap(
+              data: {DateTime.now(): 5},
+              colorScale: const [Colors.grey, Colors.green],
+            ),
+          ),
+        ),
+      );
+
+      // Wait for animations to complete
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AnimatedHabitHeatmap), findsOneWidget);
+    });
   });
 }
